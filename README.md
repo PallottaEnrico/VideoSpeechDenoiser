@@ -23,7 +23,7 @@ pip install progress
 pip install pydub
 pip install ffmpeg
 ```
-If you use conda, run also the following command, since PyTorch creates some issues with ffmpeg
+If you use conda, run also the following command, since PyTorch creates some issues with ffmpeg:
 ```shell
 conda update ffmpeg
 ```
