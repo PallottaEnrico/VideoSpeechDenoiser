@@ -10,7 +10,7 @@ git clone https://github.com/yurinoviello/VideoSpeechDenoiser
 cd VideoSpeechDenoiser
 ```
 
-You need to install [PyTorch](https://pytorch.org/get-started/locally/) and (eventually) the [CUDA](https://developer.nvidia.com/cuda-zone) version suited to your machine. E.g. with conda:
+You need to install [PyTorch](https://pytorch.org/get-started/locally/) and (eventually) the [CUDA](https://developer.nvidia.com/cuda-zone) version suited to your machine. E.g. using conda:
 ```shell
 conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge
 ```
@@ -36,7 +36,7 @@ USAGE:
 
 ARGS:
     FILE
-    	Video to denoise
+    	    Video to denoise
 
 OPTIONS:
     -l, --len
@@ -44,7 +44,7 @@ OPTIONS:
     -h, --help
             Print help information
     -o, --outDir
-        The directory path where you want to save the new video file (current dir default)
+            The directory path where you want to save the new video file (current dir default)
 ```
 E.g.
 ```shell
