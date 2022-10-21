@@ -79,9 +79,8 @@ def main():
     result=AudioSegment.empty()
     for t in tracks: result += t
 
-    audioOutput = splittedName + "_denoised.wav"
+    audioOutput = tmpdir + "/" + splittedName + "_denoised.wav"
     result.export("{audioOutput}".format(audioOutput=audioOutput), format="wav")
-    os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
 
     if outDir != "" and (not os.path.isdir(outDir)):
         os.mkdir(outDir)
@@ -95,8 +94,7 @@ def main():
     if status != 0:
         print("Aborting")
         exit()
-
-    os.system("rm -rf {audioOutput}".format(audioOutput=audioOutput))
+    os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
     print("FINISHED")
     print("Now the video is in \'mov\' format, if you want the \'mp4\' version run the following command (it takes a lot)")
     print("ffmpeg -i input.mov -qscale 0 output.mp4")
