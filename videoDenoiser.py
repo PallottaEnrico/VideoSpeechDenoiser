@@ -17,14 +17,14 @@ def main():
         required=False,
         type=int,
         default=5,
-        help="Length of each segment of the splitted audio track",
+        help="Length in minutes of each segment of the splitted audio track (5 deafult)",
     )
     parser.add_argument(
         "-o", "--outDir",
         required=False,
         type=str,
         default="",
-        help="The directory path where you want to save the new video file",
+        help="The directory path where you want to save the new video file (current dir default)",
     )
     args = parser.parse_args()
     inputFile = args.noisy_file
@@ -85,9 +85,8 @@ def main():
 
     if outDir != "" and (not os.path.isdir(outDir)):
         os.mkdir(outDir)
-
-    if outDir[-1] != '/':
-        outDir += '/'
+        if outDir[-1] != '/':
+            outDir += '/'
 
     print("Creating the new video...\n")
     status = os.system("ffmpeg -y -i {inputFile} -i {audioOutput} -acodec copy -vcodec copy -map 0:v:0 -map 1:a:0 {outDir}{finalVideo} > /dev/null 2>&1".format(
@@ -104,3 +103,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
