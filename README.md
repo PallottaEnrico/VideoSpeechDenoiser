@@ -1,1 +1,46 @@
-# VideoSpeechDenoiser
+# Video Speech Denoiser
+
+This repo contains a Python script that denoises over speeched voice of mp4 files. The script extracts the audio from the video, it divides it into segments and uses the trained model of [DeepFilterNet] (https://github.com/Rikorose/DeepFilterNet) to denoise the audio track, then it reverses the process. It is useful since most hardware cannot process the entire audio using DeepFilterNet.
+
+## Installation
+
+You shall clone this repo on your machine and move to the project directory:
+```shell
+https://github.com/yurinoviello/VideoSpeechDenoiser
+cd VideoSpeechDenoiser
+```
+
+You need to install [PyTorch] (https://pytorch.org/get-started/locally/) and (eventually) the [CUDA] (https://developer.nvidia.com/cuda-zone) version suited to your machine. E.g. with conda:
+```shell
+conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge
+```
+
+Then you need to install the dependecies:
+```shell
+pip install progress
+pip install pydub
+pip install ffmpeg
+```
+
+## Usage
+
+The script create a new video file with denoised audio.
+```
+USAGE:
+    python videoDenoiser.py [OPTIONS] FILE
+
+ARGS:
+    FILE
+    	Video to denoise
+
+OPTIONS:
+    -l, --len
+            Length of each segment of the splitted audio track
+    -h, --help
+            Print help information
+```
+E.g.
+```shell
+cd VSD
+python videoDenoiser.py video.mp4
+```
