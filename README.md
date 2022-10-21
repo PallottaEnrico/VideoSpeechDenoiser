@@ -6,7 +6,7 @@ This repo contains a Python script that denoises over speeched voice of mp4 file
 
 You shall clone this repo on your machine and move to the project directory:
 ```shell
-https://github.com/yurinoviello/VideoSpeechDenoiser
+git clone https://github.com/yurinoviello/VideoSpeechDenoiser
 cd VideoSpeechDenoiser
 ```
 
