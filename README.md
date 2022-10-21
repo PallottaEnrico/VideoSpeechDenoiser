@@ -1,6 +1,6 @@
 # Video Speech Denoiser
 
-This repo contains a Python script that denoises over speeched voice of mp4 files. The script extracts the audio from the video, it divides it into segments and uses the trained model of [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) to denoise the audio track, then it reverses the process. It is useful since most hardware cannot process the entire audio using DeepFilterNet.
+This repo contains a Python script that denoises speeched voice of mp4 files. The script extracts the audio from the video, it divides it into segments and uses the trained model of [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) to denoise the audio track, then it reverses the process. It is useful since most hardware cannot process the entire audio using DeepFilterNet.
 
 ## Installation
 
