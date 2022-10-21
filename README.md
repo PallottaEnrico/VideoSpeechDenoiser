@@ -40,14 +40,14 @@ ARGS:
 
 OPTIONS:
     -l, --len
-            Length of each segment of the splitted audio track
+            Length in minutes of each segment of the splitted audio track (5 default)
     -h, --help
             Print help information
     -o, --outDir
-        The directory path where you want to save the new video file
+        The directory path where you want to save the new video file (current dir default)
 ```
 E.g.
 ```shell
-cd VSD
+cd VideoSpeechDenoiser
 python videoDenoiser.py video.mp4
 ```
