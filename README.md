@@ -43,6 +43,8 @@ OPTIONS:
             Length of each segment of the splitted audio track
     -h, --help
             Print help information
+    -o, --outDir
+        The directory path where you want to save the new video file
 ```
 E.g.
 ```shell
