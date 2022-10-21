@@ -19,8 +19,16 @@ def main():
         default=5,
         help="Length of each segment of the splitted audio track",
     )
+    parser.add_argument(
+        "-o", "--outDir",
+        required=False,
+        type=str,
+        default="",
+        help="The directory path where you want to save the new video file",
+    )
     args = parser.parse_args()
     inputFile = args.noisy_file
+    outDir = args.outDir
     if not os.path.isfile(inputFile):
         print("File not exists")
         exit()
@@ -71,13 +79,19 @@ def main():
     result=AudioSegment.empty()
     for t in tracks: result += t
 
-    audioOutput = splittedName + "Result.wav"
+    audioOutput = splittedName + "_denoised.wav"
     result.export("{audioOutput}".format(audioOutput=audioOutput), format="wav")
     os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
 
+    if outDir != "" and (not os.path.isdir(outDir)):
+        os.mkdir(outDir)
+
+    if outDir[-1] != '/':
+        outDir += '/'
+
     print("Creating the new video...\n")
-    status = os.system("ffmpeg -y -i {inputFile} -i {audioOutput} -acodec copy -vcodec copy -map 0:v:0 -map 1:a:0 {finalVideo} > /dev/null 2>&1".format(
-        inputFile=inputFile, audioOutput=audioOutput, finalVideo=splittedName+"Result.mov"
+    status = os.system("ffmpeg -y -i {inputFile} -i {audioOutput} -acodec copy -vcodec copy -map 0:v:0 -map 1:a:0 {outDir}{finalVideo} > /dev/null 2>&1".format(
+        inputFile=inputFile, audioOutput=audioOutput, outDir=outDir, finalVideo=splittedName+"_denoised.mov"
     ))
     if status != 0:
         print("Aborting")
