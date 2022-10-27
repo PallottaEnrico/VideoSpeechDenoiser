@@ -17,15 +17,18 @@ conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c cond
 
 Then you need to install the dependecies:
 ```shell
-# I encountered some problems with the latest version
-pip install -Iv deepfilternet==0.2.5
+pip install -Iv deepfilternet
 pip install progress
 pip install pydub
 pip install ffmpeg
 ```
-If you use conda, run also the following command, since PyTorch creates some issues with ffmpeg:
+PyTorch creates some issues with ffmpeg, if you use conda, run also the following command:
 ```shell
 conda update ffmpeg
+```
+Otherwise try:
+```shell
+sudo apt install ffmpeg
 ```
 ## Usage
 
