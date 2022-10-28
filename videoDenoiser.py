@@ -26,6 +26,7 @@ def main():
         default="",
         help="The directory path where you want to save the new video file (current dir default)",
     )
+
     args = parser.parse_args()
     inputFile = args.noisy_file
     outDir = args.outDir
@@ -81,24 +82,23 @@ def main():
 
     audioOutput = tmpdir + "/" + splittedName + "_denoised.wav"
     result.export("{audioOutput}".format(audioOutput=audioOutput), format="wav")
-
+    
     if outDir != "" and (not os.path.isdir(outDir)):
         os.mkdir(outDir)
         if outDir[-1] != '/':
             outDir += '/'
-
+              
     print("Creating the new video...\n")
-    status = os.system("ffmpeg -y -i {inputFile} -i {audioOutput} -acodec copy -vcodec copy -map 0:v:0 -map 1:a:0 {outDir}{finalVideo} > /dev/null 2>&1".format(
-        inputFile=inputFile, audioOutput=audioOutput, outDir=outDir, finalVideo=splittedName+"_denoised.mov"
+    status = os.system("ffmpeg -y -i {inputFile} -i {audioOutput} -map 0:v -map 1:a -c:v copy -shortest {outDir}{finalVideo} > /dev/null 2>&1".format(
+        inputFile=inputFile, audioOutput=audioOutput, outDir=outDir, finalVideo=splittedName+"_denoised.mp4"
     ))
     if status != 0:
         print("Aborting")
+        os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
         exit()
+        
     os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
     print("FINISHED")
-    print("Now the video is in \'mov\' format, if you want the \'mp4\' version run the following command (it takes a lot)")
-    print("ffmpeg -i input.mov -qscale 0 output.mp4")
 
 if __name__ == '__main__':
     main()
-
