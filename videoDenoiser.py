@@ -37,7 +37,7 @@ def main():
     if inputFile.split(".")[-1] != "mp4":
         print("The file must to be in \'mp4\' format")
         exit()
-    splittedName = inputFile.split(".")[0]
+    splittedName = os.path.basename(inputFile).split(".")[0]
     audioFile = splittedName + ".wav"
 
     tmpdir = '.videoDenoiser.tmp'
