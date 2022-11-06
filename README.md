@@ -12,7 +12,8 @@ cd VideoSpeechDenoiser
 
 You need to install [PyTorch](https://pytorch.org/get-started/locally/) and (eventually) the [CUDA](https://developer.nvidia.com/cuda-zone) version suited to your machine. E.g. using conda:
 ```shell
-conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch -c conda-forge
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge
+
 ```
 
 Then you need to install the dependecies:
