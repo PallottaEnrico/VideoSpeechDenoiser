@@ -14,13 +14,13 @@ def process_file(file_path):
         denoise(file_path)
         # Display a message box when the process is completed
         tk.messagebox.showinfo(title="Success", message="Completed")
+        # Reset the progress bar after completion
+        progress_var.set(0)
+        progress_bar.stop()
     except Exception as e:
         # Display the error message in a message box
         tk.messagebox.showerror(title="Error", message=str(e))
 
-    # Reset the progress bar after completion
-    progress_var.set(0)
-    progress_bar.stop()
 
 def open_file_dialog():
     file_path = filedialog.askopenfilename(title="Select a file")
