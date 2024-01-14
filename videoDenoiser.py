@@ -86,4 +86,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    denoise(args.noiy_file, args.len)
+    denoise(args.noisy_file, args.len)

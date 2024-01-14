@@ -23,7 +23,7 @@ def process_file(file_path):
     progress_bar.stop()
 
 def open_file_dialog():
-    file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("All files", "*.*")])
+    file_path = filedialog.askopenfilename(title="Select a file")
     if file_path:
         selected_file.set(file_path)
         path_entry.delete(0, tk.END)
