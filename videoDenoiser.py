@@ -5,38 +5,15 @@ import os
 from progress.bar import ChargingBar
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "noisy_file",
-        type=str,
-        help="Video to denoise",
-    )
-    parser.add_argument(
-        "-l", "--len",
-        required=False,
-        type=int,
-        default=1,
-        help="Length in minutes of each segment of the splitted audio track (5 deafult)",
-    )
-    parser.add_argument(
-        "-o", "--outDir",
-        required=False,
-        type=str,
-        default="",
-        help="The directory path where you want to save the new video file (current dir default)",
-    )
-
-    args = parser.parse_args()
-    inputFile = args.noisy_file
-    outDir = args.outDir
+def denoise(inputFile, l=1):
     if not os.path.isfile(inputFile):
-        print("File not exists")
-        exit()
+        raise FileNotFoundError("The file doesn't exist")
 
     if inputFile.split(".")[-1] != "mp4":
-        print("The file must to be in \'mp4\' format")
-        exit()
+        raise ValueError("The file must be in \'mp4\' format")
+
+    outDir = os.path.dirname(inputFile) + "/"
+
     splittedName = os.path.basename(inputFile).split(".")[0]
     audioFile = splittedName + ".wav"
 
@@ -50,11 +27,9 @@ def main():
     print("ffmpeg -y -i {inputFile} -ac 2 -f wav {tmpdir}/{audioFile} > /dev/null 2>&1".format(inputFile=inputFile, tmpdir=tmpdir, audioFile=audioFile))
     status = os.system("ffmpeg -y -i {inputFile} -ac 2 -f wav {tmpdir}/{audioFile} > /dev/null 2>&1".format(inputFile=inputFile, tmpdir=tmpdir, audioFile=audioFile))
     if status != 0:
-        print("Problem with audio extraction")
-        print("Aborting")
-        exit()
+        raise ValueError("Problem with audio extraction")
 
-    unit = args.len * 60 * 1000 # l minutes in milliseconds
+    unit = l * 60 * 1000 # l minutes in milliseconds
     newAudio = AudioSegment.from_wav(tmpdir + "/" + audioFile)
     tot = len(newAudio)
     n_parts = ceil(tot/unit)
@@ -66,40 +41,49 @@ def main():
         status = os.system('deepFilter {tmpdir}/track{i}.wav -o {tmpdir} > /dev/null 2>&1'.format(tmpdir=tmpdir, i=i))
         if status != 0:
             bar.finish()
-            print("This is a memory error, try to reduce the value of \'l\'")
-            print("Aborting")
+            raise ValueError("Probably there's a memory error, try to reduce the value of \'l\'")
             os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
-            exit()
+
         bar.next()
         os.system("rm {tmpdir}/track{i}.wav".format(tmpdir=tmpdir, i=i))
         
     print('\t' + str(bar.elapsed_td))
     bar.finish()
     print("Merging the segments...\n")
-    tracks = [AudioSegment.from_wav("{tmpdir}/track{i}_DeepFilterNet2.wav".format(tmpdir=tmpdir, i=i)) for i in range(n_parts)]
+    tracks = [AudioSegment.from_wav("{tmpdir}/track{i}_DeepFilterNet3.wav".format(tmpdir=tmpdir, i=i)) for i in range(n_parts)]
 
     result=AudioSegment.empty()
     for t in tracks: result += t
 
     audioOutput = tmpdir + "/" + splittedName + "_denoised.wav"
     result.export("{audioOutput}".format(audioOutput=audioOutput), format="wav")
-    
-    if outDir != "" and (not os.path.isdir(outDir)):
-        os.mkdir(outDir)
-        if outDir[-1] != '/':
-            outDir += '/'
               
     print("Creating the new video...\n")
     status = os.system("ffmpeg -y -i {inputFile} -i {audioOutput} -map 0:v -map 1:a -c:v copy -shortest {outDir}{finalVideo} > /dev/null 2>&1".format(
         inputFile=inputFile, audioOutput=audioOutput, outDir=outDir, finalVideo=splittedName+"_denoised.mp4"
     ))
     if status != 0:
-        print("Aborting")
+        raise ValueError("Problem with video creation")
         os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
-        exit()
         
     os.system("rm -rf {tmpdir}".format(tmpdir=tmpdir))
     print("FINISHED")
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "noisy_file",
+        type=str,
+        help="Video to denoise",
+    )
+    parser.add_argument(
+        "-l", "--len",
+        required=False,
+        type=int,
+        default=1,
+        help="Length in minutes of each segment of the splitted audio track (5 deafult)",
+    )
+
+    args = parser.parse_args()
+
+    denoise(args.noiy_file, args.len)
