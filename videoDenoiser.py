@@ -16,7 +16,7 @@ def main():
         "-l", "--len",
         required=False,
         type=int,
-        default=5,
+        default=1,
         help="Length in minutes of each segment of the splitted audio track (5 deafult)",
     )
     parser.add_argument(
@@ -47,6 +47,7 @@ def main():
         os.system("rm -rf {tmpdir}/*".format(tmpdir=tmpdir))
 
     print("Extracting audio ...\n")
+    print("ffmpeg -y -i {inputFile} -ac 2 -f wav {tmpdir}/{audioFile} > /dev/null 2>&1".format(inputFile=inputFile, tmpdir=tmpdir, audioFile=audioFile))
     status = os.system("ffmpeg -y -i {inputFile} -ac 2 -f wav {tmpdir}/{audioFile} > /dev/null 2>&1".format(inputFile=inputFile, tmpdir=tmpdir, audioFile=audioFile))
     if status != 0:
         print("Problem with audio extraction")
